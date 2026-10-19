@@ -12,7 +12,6 @@ COPY layouts layouts
 COPY scripts scripts
 COPY content content
 COPY static static
-COPY .git .git
 
 ADD https://github.com/rancherlabs/website-theme/archive/master.tar.gz /run/master.tar.gz
 RUN mkdir -p /output /theme/rancher-website-theme && tar -xzf /run/master.tar.gz -C /run/node_modules/rancher-website-theme --strip=1 && rm /run/master.tar.gz
