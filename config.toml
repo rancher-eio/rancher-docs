@@ -174,7 +174,7 @@ pre        = "<i class='material-icons'>keyboard_arrow_down</i>"
 
   [[menu.main]]
   name       = "Rancher Docs"
-  url        = "https://rancher.com/docs/"
+  url        = "https://docs.rancher.systems"
   parent     = "learn"
   weight     = "6"
 
