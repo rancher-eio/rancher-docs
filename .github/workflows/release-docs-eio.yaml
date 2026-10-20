@@ -23,6 +23,8 @@ jobs:
           uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5
           with:
             images: rancherlabs/rancher-docs
+            tags: |
+              rancherlabs/${{ github.repository }}:prod
 
         - name: Login to Docker Hub
           uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
