@@ -4,37 +4,40 @@ on: push
 
 jobs:
     publish-prod:
-        if: ${{ github.ref == 'refs/heads/master' }}
-        runs-on: ubuntu-latest
-        steps:
+      permissions:
+        contents: read
+        id-token: write
+      if: ${{ github.ref == 'refs/heads/master' }}
+      runs-on: ubuntu-latest
+      steps:
 
-          - name: "Read secrets"
-            uses: rancher-eio/read-vault-secrets@7282bf97898cd1c16c89f837e0bb442e6d384c89 # main
-            with:
-              secrets: |
-                secret/data/github/repo/${{ github.repository }}/dockerhub/rancher/credentials username | DOCKER_USERNAME ;
-                secret/data/github/repo/${{ github.repository }}/dockerhub/rancher/credentials password | DOCKER_PASSWORD
+        - name: "Read secrets"
+          uses: rancher-eio/read-vault-secrets@7282bf97898cd1c16c89f837e0bb442e6d384c89 # main
+          with:
+            secrets: |
+              secret/data/github/repo/${{ github.repository }}/dockerhub/rancher/credentials username | DOCKER_USERNAME ;
+              secret/data/github/repo/${{ github.repository }}/dockerhub/rancher/credentials password | DOCKER_PASSWORD
 
-          - name: Docker meta
-            id: meta
-            uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5
-            with:
-              images: rancherlabs/rancher-docs
+        - name: Docker meta
+          id: meta
+          uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5
+          with:
+            images: rancherlabs/rancher-docs
 
-          - name: Login to Docker Hub
-            uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
-            with:
-              username: ${{ env.DOCKER_USERNAME }}
-              password: ${{ env.DOCKER_PASSWORD }}
+        - name: Login to Docker Hub
+          uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+          with:
+            username: ${{ env.DOCKER_USERNAME }}
+            password: ${{ env.DOCKER_PASSWORD }}
 
-          - name: Set up QEMU
-            uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
+        - name: Set up QEMU
+          uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
 
-          - name: Set up Docker Buildx
-            uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
 
-          - name: Build and push
-            uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
-            with:
-              push: true
-              file: Dockerfile.eio
+        - name: Build and push
+          uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+          with:
+            push: true
+            file: Dockerfile.eio
