@@ -43,3 +43,4 @@ jobs:
           with:
             push: true
             file: Dockerfile.eio
+            tags: ${{ steps.meta.outputs.tags }}
